@@ -8,12 +8,12 @@ import GroupTab from './components/GroupTab';
 
 async function getPostData () {
       try {
-        const res = await fetch('http://localhost:5001/postData');
+        const res = await fetch('http://localhost:5002/api/seed');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return await res.json();  //
       } catch (err) {
         console.error('Failed to load poll:', err);
-        return err.message; // Return error message for debugging
+        throw new Error('Failed to load post data'); // Return error message for debugging
       }
     };
 
@@ -34,7 +34,7 @@ function App() {
     });
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading || !postData) return <p>Loading...</p>;
 
   // return (
   //   <div className="App flex">
@@ -67,12 +67,19 @@ function App() {
       <div>
 
       {/* middle column */}
-        <Post
-          user={postData.user}
-          group={postData.group}
-          post={postData.post}
-          pollOptions={postData.pollOptions}
-        />
+        {postData.posts && postData.posts.length > 0 ? (
+          postData.posts.map((post) => (
+            <Post
+              key={post.id}
+              user={postData.users?.find(u => u.id === post.userId)}
+              group={postData.groups?.find(g => g.id === post.groupId)}
+              post={post}
+              pollOptions={postData.pollOptions?.filter(opt => opt.postId === post.id)}
+            />
+          ))
+        ) : (
+          <p>No posts available.</p>
+        )}
 
       </div>
     </div>

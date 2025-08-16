@@ -3,6 +3,9 @@ import "./UserCard.css";
 import clsx from 'clsx';
 
 const UserCard = ({ user, group, timeLeft }) => {
+  if (!user || !group) {
+    return null;
+  }
   return (
     <div className="user-card">
       <div className="avatar">

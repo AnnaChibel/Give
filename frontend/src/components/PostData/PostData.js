@@ -18,6 +18,9 @@ const settings = {
 };
 
 const PostData = ({post}) => {
+  if (!post || !post.question) {
+    return null; // Handle case where post data is not available
+  }
 
   const hasContent = post.content && post.content.length > 0;
 

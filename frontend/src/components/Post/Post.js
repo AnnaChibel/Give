@@ -8,7 +8,7 @@ import './Post.css';
 const Post = ({user, group, post, pollOptions}) => {
   return (
     <div className='root'>
-      <UserCard user={user} group={group} timeLeft={post.timeLeft} />
+      <UserCard user={user} group={group} timeLeft="2 hours" />
       <PostData post={post} />
       <PollBox initialOptions={pollOptions} />
     </div>
